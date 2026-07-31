@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+/* ===== 主题变量（金色摄影风） ===== */
+@theme inline {
+  --color-bg: #0a0a0a;
+  --color-bg-soft: #0d0d0d;
+  --color-card: #141414;
+  --color-card-border: rgba(255, 255, 255, 0.06);
+  --color-gold: #c9a96e;
+  --color-gold-light: #dfc499;
+  --color-gold-dark: #a88b52;
+  --font-sans: "Inter", system-ui, -apple-system, "PingFang SC",
+    "Microsoft YaHei", sans-serif;
+}
+
+/* ===== 基础样式 ===== */
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* 锚点跳转时为固定导航栏留出空间 */
+  scroll-padding-top: 5rem;
+  /* 压 iOS Safari 橡皮筋：拖到顶/底不再被拽出白边回弹（GAP-006） */
+  overscroll-behavior-y: none;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg);
+  color: #f4f4f5;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+  /* 同上：body 也隔离，菜单锁滚动时不会触发系统回弹 */
+  overscroll-behavior-y: none;
+}
+
+/* ===== 自定义滚动条 ===== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* ===== 动画 ===== */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+
+/* ===== Lightbox 深色覆盖 ===== */
+.yarl__container {
+  background: rgba(0, 0, 0, 0.96) !important;
+  /* 灯箱内也隔离橡皮筋，避免全屏看图时上下拽动回弹（GAP-006） */
+  overscroll-behavior: contain;
+}
+
+/* 选中文字用金色，呼应主题 */
+::selection {
+  background: rgba(201, 169, 110, 0.3);
+}

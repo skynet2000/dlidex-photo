@@ -1,0 +1,93 @@
+{
+  "items": [
+    {
+      "client": 1,
+      "srcFile": "IMG_5584.jpg",
+      "outName": "client1-1.jpg",
+      "title": "领证跟拍 · 客片1-1",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 1,
+      "srcFile": "IMG_5697.jpg",
+      "outName": "client1-2.jpg",
+      "title": "领证跟拍 · 客片1-2",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 1,
+      "srcFile": "IMG_5921.jpg",
+      "outName": "client1-3.jpg",
+      "title": "领证跟拍 · 客片1-3",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 1,
+      "srcFile": "IMG_6020.jpg",
+      "outName": "client1-4.jpg",
+      "title": "领证跟拍 · 客片1-4",
+      "width": 1033,
+      "height": 1600
+    },
+    {
+      "client": 1,
+      "srcFile": "IMG_6087.jpg",
+      "outName": "client1-5.jpg",
+      "title": "领证跟拍 · 客片1-5",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 2,
+      "srcFile": "1aa7d110-57b7-4e07-9668-ce2416f3afe8.png",
+      "outName": "client2-1.jpg",
+      "title": "领证跟拍 · 客片2-1",
+      "width": 1023,
+      "height": 1537
+    },
+    {
+      "client": 2,
+      "srcFile": "IMG_5255.jpg",
+      "outName": "client2-2.jpg",
+      "title": "领证跟拍 · 客片2-2",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 2,
+      "srcFile": "IMG_5273.jpg",
+      "outName": "client2-3.jpg",
+      "title": "领证跟拍 · 客片2-3",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 3,
+      "srcFile": "IMG_4040_(3).jpg",
+      "outName": "client3-1.jpg",
+      "title": "领证跟拍 · 客片3-1",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 3,
+      "srcFile": "IMG_4119.jpg",
+      "outName": "client3-2.jpg",
+      "title": "领证跟拍 · 客片3-2",
+      "width": 1067,
+      "height": 1600
+    },
+    {
+      "client": 3,
+      "srcFile": "IMG_4134.jpg",
+      "outName": "client3-3.jpg",
+      "title": "领证跟拍 · 客片3-3",
+      "width": 988,
+      "height": 1600
+    }
+  ],
+  "problems": []
+}
