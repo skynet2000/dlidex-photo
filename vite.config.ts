@@ -3,9 +3,9 @@ import react from "@vitejs/plugin-react"
 import tailwindcss from "@tailwindcss/vite"
 import { defineConfig } from "vite"
 
-// 部署到 dlidex.work 根目录（独立域名）。
+// 旧站分支（legacy-photo）：部署到 dlidex.xyz/photo/ 子目录。
 export default defineConfig({
-  base: "/",
+  base: "/photo/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
