@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react"
-import { Calendar, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react"
-import { availabilityConfig, siteConfig } from "@/data"
+import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
+import { availabilityConfig } from "@/data"
 
 const WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"]
 
@@ -172,16 +172,6 @@ export function Availability() {
         {config.note && <span className="ml-auto text-neutral-600">{config.note}</span>}
       </div>
 
-      {/* CTA — 靠底对齐 */}
-      <div className="mt-auto pt-6">
-        <a
-          href="#contact"
-          className="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#c9a96e] text-[#0a0a0a] text-sm font-medium hover:bg-[#d9bd85] transition-colors"
-        >
-          <MessageCircle className="h-4 w-4" />
-          微信 {siteConfig.contact.wechat}
-        </a>
-      </div>
     </div>
   )
 }

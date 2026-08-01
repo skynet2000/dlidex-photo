@@ -280,7 +280,7 @@ export const availabilityConfig = {
   // 档期展示从哪个月开始（含当月）
   startMonth: "2026-08",
   // 一共展示几个月（含当月，往后顺延）
-  totalMonths: 3,
+  totalMonths: 12,
   // 已约日期（金色日期=可约；写进去的日期会变成深灰已约）
   bookedDates: [] as string[],
   // 底部说明文字（可自定义，空字符串则不显示）
