@@ -4,6 +4,7 @@ import { siteConfig } from "@/data"
 
 const navLinks = [
   { href: "#portfolio", label: "作品集" },
+  { href: "#booking", label: "档期" },
   { href: "#about", label: "关于我" },
   { href: "#contact", label: "联系方式" },
 ]
