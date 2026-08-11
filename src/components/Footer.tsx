@@ -3,7 +3,6 @@ import { siteConfig } from "@/data"
 
 const quickLinks = [
   { href: "#portfolio", label: "作品集" },
-  { href: "#booking", label: "档期" },
   { href: "#about", label: "关于我" },
   { href: "#contact", label: "联系方式" },
 ]
@@ -57,12 +56,32 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-10 pt-6 border-t border-white/5 flex flex-col items-center gap-2">
           <p className="text-xs text-neutral-600">
             © {new Date().getFullYear()} {siteConfig.name} · Dlidex Photography. All rights
             reserved.
           </p>
-          <p className="text-xs text-neutral-600">用心记录，不负光影</p>
+        </div>
+
+        {/* 备案号（合规要求，纯文字无图标） */}
+        <div className="mt-2 flex items-center justify-center gap-2 text-xs text-neutral-600">
+          <a
+            href="https://beian.miit.gov.cn/#/Integrated/index"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#c9a96e] transition-colors"
+          >
+            浙ICP备2026058504号-2
+          </a>
+          <span className="text-neutral-700">·</span>
+          <a
+            href="https://beian.mps.gov.cn/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-[#c9a96e] transition-colors"
+          >
+            浙公网安备33011002020295号
+          </a>
         </div>
       </div>
     </footer>

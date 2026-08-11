@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react"
 import { Calendar, ChevronLeft, ChevronRight } from "lucide-react"
 import { availabilityConfig } from "@/data"
+import { asset } from "@/lib/asset"
 
 const WEEKDAYS = ["日", "一", "二", "三", "四", "五", "六"]
 
@@ -32,10 +33,10 @@ function isBooked(year: number, month: number, day: number, booked: string[]) {
 export function Availability() {
   const [config, setConfig] = useState<AvailabilityData>(availabilityConfig)
 
-  // 运行时从 /photo/availability.json 拉取最新档期（由「档期管理后台」发布）。
+  // 运行时从 availability.json 拉取最新档期（由「档期管理后台」发布）。
   // 拉取失败（如本地预览、首次访问）时回退到内置默认值，不影响展示。
   useEffect(() => {
-    fetch("availability.json?t=" + Date.now(), { cache: "no-store" })
+    fetch(asset("availability.json") + "?t=" + Date.now(), { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => {
         if (d && typeof d === "object" && Array.isArray(d.bookedDates)) {

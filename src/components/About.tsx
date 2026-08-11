@@ -1,5 +1,6 @@
 import { Aperture } from "lucide-react"
 import { aboutInfo } from "@/data"
+import { asset } from "@/lib/asset"
 
 export function About() {
   return (
@@ -22,7 +23,7 @@ export function About() {
             <div className="flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden mb-4 border border-white/10 ring-1 ring-white/5 shadow-lg shadow-black/40">
                 <img
-                  src={aboutInfo.avatar}
+                  src={asset(aboutInfo.avatar)}
                   alt={aboutInfo.name}
                   width={192}
                   height={192}

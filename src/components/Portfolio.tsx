@@ -10,6 +10,7 @@ import {
   type PortfolioItem,
 } from "@/data"
 import { cn } from "@/lib/cn"
+import { asset } from "@/lib/asset"
 
 // 所有真实客片分类都参与「每次刷新网站随机打乱一次」
 // 占位图（placeholder）已被过滤掉，这里按 category 分组维护各自的随机顺序。
@@ -84,7 +85,7 @@ function GalleryImage({
           原生 width/height 让浏览器在加载前就能按真实比例预留宽度，防止未加载时卡片塌缩。 */}
       <img
         ref={imgRef}
-        src={inView ? item.src : undefined}
+        src={inView ? asset(item.src) : undefined}
         alt={item.title}
         width={item.width}
         height={item.height}
@@ -199,7 +200,7 @@ export function Portfolio() {
 
   // 灯箱数据源：与当前展示列表一一对应
   const lightboxSlides = currentItems.map((item) => ({
-    src: item.src,
+    src: asset(item.src),
     alt: item.title,
     width: item.width,
     height: item.height,
