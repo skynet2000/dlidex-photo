@@ -5,7 +5,7 @@ import { defineConfig } from "vite"
 
 // 旧站分支（legacy-photo）：部署到 dlidex.xyz/photo/ 子目录。
 export default defineConfig({
-  base: "/photo/",
+  base: "/",
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
