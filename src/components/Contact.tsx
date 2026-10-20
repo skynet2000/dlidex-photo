@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { MessageCircle, ExternalLink, Mail } from "lucide-react"
+import { MessageCircle, Mail } from "lucide-react"
 import { siteConfig } from "@/data"
 
 const contactMethods = [
@@ -9,14 +9,6 @@ const contactMethods = [
     value: siteConfig.contact.wechat,
     action: "复制微信号",
     actionType: "copy" as const,
-  },
-  {
-    icon: ExternalLink,
-    label: "小红书",
-    value: siteConfig.contact.xiaohongshu,
-    action: "前往主页",
-    actionType: "link" as const,
-    href: siteConfig.social.xiaohongshu || null,
   },
   {
     icon: Mail,
@@ -127,7 +119,7 @@ export function Contact() {
           <p className="text-xs text-neutral-500 leading-relaxed">
             微信消息通常 2 小时内回复，邮件 24 小时内回复。
             <br />
-            拍摄日可能回复较慢，急事可以小红书主页留言，感谢理解 🙏
+            拍摄日可能回复较慢，急事请优先微信或邮件联系，感谢理解 🙏
           </p>
         </div>
       </div>

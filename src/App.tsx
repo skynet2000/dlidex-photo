@@ -4,7 +4,7 @@ import { Hero } from "@/components/Hero"
 import { Portfolio } from "@/components/Portfolio"
 import { About } from "@/components/About"
 import { Availability } from "@/components/Availability"
-// import { Services } from "@/components/Services"  // 已屏蔽：服务与报价模块不符合个人备案要求
+import { Services } from "@/components/Services"
 import { Contact } from "@/components/Contact"
 import { Footer } from "@/components/Footer"
 
@@ -52,7 +52,8 @@ export default function App() {
             </div>
           </div>
         </section>
-        {/* <Services /> */}
+        <Services />
+        {/* <Services /> （保留注释便于回退） */}
       </main>
       <Footer />
     </div>

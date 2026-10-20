@@ -9,24 +9,23 @@ export const siteConfig = {
   description: "冻梨摄影（Dlidex）杭州·绍兴独立摄影师，专业设备与氛围道具，为你记录婚姻登记与幸福瞬间。",
   contact: {
     wechat: "dlidex1024",
-    xiaohongshu: "@赛博冻梨dlidex",
     email: "skynettiantian@gmail.com",
     phone: "",
   },
   social: {
-    xiaohongshu: "https://xhslink.com/m/53NEq3yUrfq",
     weibo: "",
     instagram: "",
   },
 };
 
 // 作品分类 — 按拍摄业务分类
+// 「各类写真」暂不展示（2026-08-21 主人要求隐藏 chip；items 保留以备恢复）
 export const portfolioCategories = [
   { id: "领证跟拍", label: "领证跟拍" },
   { id: "订婚跟拍", label: "订婚跟拍" },
   { id: "婚礼跟拍", label: "婚礼跟拍" },
   { id: "宝宝宴", label: "宝宝宴" },
-  { id: "各类写真", label: "各类写真" },
+  // { id: "各类写真", label: "各类写真" },
 ] as const;
 
 export type PortfolioCategoryId = (typeof portfolioCategories)[number]["id"];
@@ -36,7 +35,9 @@ export type PortfolioCategoryId = (typeof portfolioCategories)[number]["id"];
 export interface PortfolioItem {
   id: string;
   title: string;
-  category: Exclude<PortfolioCategoryId, "all">;
+  // 类型放宽为 string：允许 items 携带已隐藏的分类（如"各类写真"）。
+  // 恢复该分类时改回 `Exclude<PortfolioCategoryId, "all">` 即可。
+  category: string;
   src: string;
   width: number;
   height: number;
@@ -57,8 +58,6 @@ export const portfolioItems: PortfolioItem[] = [
   { id: "c-2a38fcfa13", title: "领证跟拍 · c-2a38fcfa13", category: "领证跟拍", album: "4", src: "photos/c-2a38fcfa13.webp", width: 1200, height: 1600 },
   { id: "c-b55f39457c", title: "领证跟拍 · c-b55f39457c", category: "领证跟拍", album: "其他", src: "photos/c-b55f39457c.webp", width: 1023, height: 1537 },
   { id: "c-f59bbf91ef", title: "领证跟拍 · c-f59bbf91ef", category: "领证跟拍", album: "其他", src: "photos/c-f59bbf91ef.webp", width: 1023, height: 1537 },
-  { id: "c-db4d83486e", title: "领证跟拍 · c-db4d83486e", category: "领证跟拍", album: "其他", src: "photos/c-db4d83486e.webp", width: 1023, height: 1537 },
-  { id: "c-bbed48cd26", title: "领证跟拍 · c-bbed48cd26", category: "领证跟拍", album: "其他", src: "photos/c-bbed48cd26.webp", width: 1025, height: 1535 },
   { id: "c-ae75c4e651", title: "领证跟拍 · c-ae75c4e651", category: "领证跟拍", album: "客片1", src: "photos/c-ae75c4e651.webp", width: 1067, height: 1600 },
   { id: "c-f816cc5f5c", title: "领证跟拍 · c-f816cc5f5c", category: "领证跟拍", album: "客片1", src: "photos/c-f816cc5f5c.webp", width: 1067, height: 1600 },
   { id: "c-0a84b72aee", title: "领证跟拍 · c-0a84b72aee", category: "领证跟拍", album: "客片1", src: "photos/c-0a84b72aee.webp", width: 1033, height: 1600 },
@@ -257,11 +256,6 @@ export const faqItems = [
     question: "外景地点怎么确定？",
     answer:
       "民政局附近的公园、湖边、街景、车内都可以。杭州、绍兴我都有常拍路线推荐清单，也可以按你的想法来。",
-  },
-  {
-    question: "遇到天气不好怎么办？",
-    answer:
-      "外景如遇恶劣天气可免费改期，提前沟通即可。民政局内景不受天气影响，也可以改为室内咖啡馆等方案。",
   },
   {
     question: "交通费和额外费用怎么算？",

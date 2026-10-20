@@ -50,7 +50,6 @@ export function Footer() {
             </h3>
             <div className="flex flex-col gap-2 text-sm text-neutral-500">
               <p>微信：{siteConfig.contact.wechat}</p>
-              <p>小红书：{siteConfig.contact.xiaohongshu}</p>
               <p>邮箱：{siteConfig.contact.email}</p>
             </div>
           </div>
