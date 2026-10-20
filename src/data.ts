@@ -6,7 +6,7 @@
 export const siteConfig = {
   name: "冻梨摄影",
   tagline: "杭州·绍兴独立摄影师",
-  description: "冻梨摄影（Dlidex）杭州·绍兴独立摄影师，专业设备与氛围道具，为你记录婚姻登记与幸福瞬间。",
+  description: "冻梨摄影（dlidex）杭州·绍兴独立摄影师，专业设备与氛围道具，为你记录婚姻登记与幸福瞬间。",
   contact: {
     wechat: "dlidex1024",
     email: "skynettiantian@gmail.com",
@@ -285,10 +285,10 @@ export const availabilityConfig = {
 export const aboutInfo = {
   heading: "关于我",
   avatar: "photos/avatar.webp",
-  name: "冻梨摄影（Dlidex）",
+  name: "冻梨摄影（dlidex）",
   title: "独立摄影师 · 中国摄影师协会会员",
   bio: [
-    "嗨，我是冻梨摄影（Dlidex），常驻杭州、绍兴的独立摄影师。中国摄影师协会会员，在大厂工作，审美在线、性格外放的“超级 e 人”。",
+    "嗨，我是冻梨摄影（dlidex），常驻杭州、绍兴的独立摄影师。中国摄影师协会会员，在大厂工作，审美在线、性格外放的“超级 e 人”。",
     "专注于领证跟拍、订婚跟拍、婚礼记录、宝宝宴与各类写真。喜欢用自然光与多样场景，捕捉真实情绪，把你重要那天的仪式感与幸福瞬间定格下来。",
     "器材专业、道具齐全，拍摄前会和你充分沟通风格与流程，让你轻松出镜，摆姿势不尴尬。",
   ],

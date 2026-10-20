@@ -57,7 +57,7 @@ export function Footer() {
 
         <div className="mt-10 pt-6 border-t border-white/5 flex flex-col items-center gap-2">
           <p className="text-xs text-neutral-600">
-            © {new Date().getFullYear()} {siteConfig.name} · Dlidex Photography. All rights
+            © {new Date().getFullYear()} {siteConfig.name} · dlidex Photography. All rights
             reserved.
           </p>
         </div>
