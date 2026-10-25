@@ -9,3 +9,13 @@ backups
 __pycache__
 *.pyc
 *.log
+
+# 客片原图（真实客户照片，不随源码公开，clone 后需自备）
+public/photos/*
+!public/photos/.gitkeep
+
+# IMA 客片同步清单（含知识库 ID、内部路径、客片标识，不入库）
+sync_manifest.json
+sync_manifest.final.json
+scripts/ima_samples_manifest.json
+scripts/manifest_client_photos.json
