@@ -32,24 +32,53 @@ function isBooked(year: number, month: number, day: number, booked: string[]) {
 
 export function Availability() {
   const [config, setConfig] = useState<AvailabilityData>(availabilityConfig)
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
+  const [attempt, setAttempt] = useState(0)
 
   // 运行时从 availability.json 拉取最新档期（由「档期管理后台」发布）。
-  // 拉取失败（如本地预览、首次访问）时回退到内置默认值，不影响展示。
+  // 只有成功读取并校验数据后才展示日历，避免把未知档期当成可约。
   useEffect(() => {
-    fetch(asset("availability.json") + "?t=" + Date.now(), { cache: "no-store" })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
-        if (d && typeof d === "object" && Array.isArray(d.bookedDates)) {
-          setConfig((prev) => ({
-            startMonth: d.startMonth || prev.startMonth,
-            totalMonths: d.totalMonths || prev.totalMonths,
-            bookedDates: d.bookedDates,
-            note: typeof d.note === "string" ? d.note : prev.note,
-          }))
-        }
+    const controller = new AbortController()
+    let cancelled = false
+    const timeout = window.setTimeout(() => controller.abort(), 10000)
+    setStatus("loading")
+    fetch(asset("availability.json") + "?t=" + Date.now(), {
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then((r) => {
+        if (!r.ok) throw new Error("Availability request failed")
+        return r.json()
       })
-      .catch(() => {})
-  }, [])
+      .then((d) => {
+        if (
+          !d || typeof d !== "object" ||
+          typeof d.startMonth !== "string" || !/^\d{4}-(0[1-9]|1[0-2])$/.test(d.startMonth) ||
+          !Number.isInteger(d.totalMonths) || d.totalMonths < 1 ||
+          !Array.isArray(d.bookedDates) ||
+          !d.bookedDates.every((date: unknown) => typeof date === "string" && /^\d{4}-\d{2}-\d{2}$/.test(date))
+        ) {
+          throw new Error("Invalid availability data")
+        }
+        if (cancelled) return
+        setConfig({
+          startMonth: d.startMonth,
+          totalMonths: d.totalMonths,
+          bookedDates: d.bookedDates,
+          note: typeof d.note === "string" ? d.note : availabilityConfig.note,
+        })
+        setStatus("ready")
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error")
+      })
+      .finally(() => window.clearTimeout(timeout))
+    return () => {
+      cancelled = true
+      window.clearTimeout(timeout)
+      controller.abort()
+    }
+  }, [attempt])
 
   const start = useMemo(() => parseMonth(config.startMonth), [config.startMonth])
   const [offset, setOffset] = useState(0)
@@ -89,6 +118,23 @@ export function Availability() {
         <h3 className="text-lg font-light tracking-wide text-white">可约档期</h3>
       </div>
 
+      {status !== "ready" ? (
+        <div className="flex min-h-72 flex-1 flex-col items-center justify-center gap-4 text-center" role="status" aria-live="polite">
+          <p className="text-base text-neutral-200">
+            {status === "loading" ? "正在加载最新档期…" : "档期暂时无法加载，请联系确认"}
+          </p>
+          {status === "error" && (
+            <button
+              type="button"
+              onClick={() => setAttempt((v) => v + 1)}
+              className="min-h-11 rounded-full border border-[#c9a96e] px-6 py-2 text-sm text-[#dfc499] hover:bg-[#c9a96e]/10 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c9a96e]"
+            >
+              重新加载
+            </button>
+          )}
+        </div>
+      ) : (
+        <>
       {/* 月份切换 */}
       <div className="flex items-center justify-between mb-5">
         <button
@@ -115,7 +161,7 @@ export function Availability() {
       {/* 星期表头 */}
       <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-2">
         {WEEKDAYS.map((w) => (
-          <div key={w} className="text-center text-xs text-neutral-500 py-1">
+          <div key={w} className="text-center text-sm text-neutral-300 py-1">
             {w}
           </div>
         ))}
@@ -134,20 +180,20 @@ export function Availability() {
           return (
             <div
               key={key}
-              title={booked ? `${day} 日已约` : `${day} 日可约`}
+              title={isPast ? `${day} 日已过` : booked ? `${day} 日已约` : `${day} 日可约`}
               className={[
-                "relative aspect-square rounded-lg flex items-center justify-center text-sm sm:text-base transition-colors select-none",
+                "relative aspect-square min-h-11 rounded-lg flex items-center justify-center text-base transition-colors select-none",
                 booked
-                  ? "bg-white/[0.04] text-neutral-600 line-through decoration-neutral-700"
+                  ? "bg-white/[0.04] text-neutral-300 line-through decoration-neutral-400"
                   : isPast
-                    ? "bg-transparent text-neutral-700"
+                    ? "bg-transparent text-neutral-400"
                     : "bg-[#c9a96e]/10 text-[#c9a96e] border border-[#c9a96e]/30 hover:bg-[#c9a96e]/20",
                 isToday && !booked ? "ring-1 ring-[#c9a96e] ring-offset-1 ring-offset-[#141414]" : "",
               ].join(" ")}
             >
               {day}
               {isToday && (
-                <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 text-[8px] tracking-widest text-[#c9a96e]">
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 text-[10px] leading-3 text-[#dfc499]">
                   今
                 </span>
               )}
@@ -157,7 +203,7 @@ export function Availability() {
       </div>
 
       {/* 图例 */}
-      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-5 text-xs text-neutral-500">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-2 mt-5 text-sm text-neutral-300">
         <span className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-sm bg-[#c9a96e]/20 border border-[#c9a96e]/40" />
           可约
@@ -170,9 +216,10 @@ export function Availability() {
           <span className="w-3 h-3 rounded-sm border border-white/10" />
           已过
         </span>
-        {config.note && <span className="ml-auto text-neutral-600">{config.note}</span>}
+        {config.note && <span className="w-full leading-relaxed text-neutral-300">{config.note}</span>}
       </div>
-
+        </>
+      )}
     </div>
   )
 }

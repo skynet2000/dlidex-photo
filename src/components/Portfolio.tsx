@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react"
 import Lightbox from "yet-another-react-lightbox"
 import Zoom from "yet-another-react-lightbox/plugins/zoom"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 import "yet-another-react-lightbox/styles.css"
 import {
   portfolioItems,
@@ -131,6 +132,19 @@ export function Portfolio() {
   const [activeAlbum, setActiveAlbum] = useState<string | null>(null)
   // 横向滚动容器：切换分类时把滚动位置重置回最左（从头浏览）
   const scrollRef = useRef<HTMLDivElement>(null)
+  const [canScrollPrev, setCanScrollPrev] = useState(false)
+  const [canScrollNext, setCanScrollNext] = useState(false)
+  const updateScrollControls = () => {
+    const el = scrollRef.current
+    if (!el) return
+    setCanScrollPrev(el.scrollLeft > 2)
+    setCanScrollNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 2)
+  }
+  const scrollGallery = (direction: number) => {
+    const el = scrollRef.current
+    if (!el) return
+    el.scrollBy({ left: direction * el.clientWidth * 0.8, behavior: "smooth" })
+  }
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollLeft = 0
   }, [activeCategory, activeAlbum])
@@ -206,6 +220,16 @@ export function Portfolio() {
     height: item.height,
   }))
 
+  useEffect(() => {
+    const el = scrollRef.current
+    if (!el) return
+    const observer = new ResizeObserver(updateScrollControls)
+    observer.observe(el)
+    for (const child of el.children) observer.observe(child)
+    updateScrollControls()
+    return () => observer.disconnect()
+  }, [currentItems])
+
   return (
     <section id="portfolio" className="py-24 px-4 scroll-mt-20">
       <div className="mx-auto max-w-6xl">
@@ -279,6 +303,8 @@ export function Portfolio() {
                 导致手机端页面滚不动——故移除该限制，交给浏览器原生轴锁定（横滑看图 / 纵滑滚页）。 */}
             <div
               ref={scrollRef}
+              id="portfolio-gallery"
+              onScroll={updateScrollControls}
               className="flex snap-x snap-proximity gap-5 overflow-x-auto overscroll-x-contain px-1 pb-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
             >
               {currentItems.map((item, index) => (
@@ -295,9 +321,31 @@ export function Portfolio() {
                 />
               ))}
             </div>
-            <p className="mt-2 text-center text-xs text-neutral-500">
+            <div className="mt-2 flex items-center justify-center gap-4">
+              <button
+                type="button"
+                aria-label="向左浏览作品"
+                aria-controls="portfolio-gallery"
+                disabled={!canScrollPrev}
+                onClick={() => scrollGallery(-1)}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c9a96e]/50 text-[#dfc499] hover:bg-[#c9a96e]/10 disabled:opacity-30 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c9a96e]"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+            <p className="text-center text-sm text-neutral-300">
               ← 左右滑动浏览，点击放大 →
             </p>
+              <button
+                type="button"
+                aria-label="向右浏览作品"
+                aria-controls="portfolio-gallery"
+                disabled={!canScrollNext}
+                onClick={() => scrollGallery(1)}
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-[#c9a96e]/50 text-[#dfc499] hover:bg-[#c9a96e]/10 disabled:opacity-30 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#c9a96e]"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-3 py-20 text-center">
