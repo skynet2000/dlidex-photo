@@ -8,7 +8,7 @@
 """
 import sys, os, json, time
 
-AK_FILE = "~/Documents/阿里云密钥.txt"
+AK_FILE = os.path.expanduser("~/Documents/阿里云密钥.txt")
 DOMAIN = "www.dlidex.work"
 CDN_DOMAIN = "www.dlidex.work"
 CONTACT_ID = 1409362          # 主站换证时确认的联系人 ID
@@ -137,7 +137,7 @@ def do_deploy(cert_id):
     client = cas_client(ak, sk)
     from alibabacloud_cas20200407 import models as cas_models
 
-    det = client.get_user_certificate_detail(cas_models.GetUserCertificateDetailRequest(certificate_id=int(cert_id)))
+    det = client.get_user_certificate_detail(cas_models.GetUserCertificateDetailRequest(cert_id=int(cert_id)))
     b = det.body
     cert_pem = getattr(b, "cert", None)
     key_pem = getattr(b, "key", None)
@@ -150,7 +150,7 @@ def do_deploy(cert_id):
     from alibabacloud_tea_openapi import models as open_api_models
     cdn = CdnClient(open_api_models.Config(access_key_id=ak, access_key_secret=sk, endpoint="cdn.aliyuncs.com"))
     from alibabacloud_cdn20180510 import models as cdn_models
-    name = f"dlidex-work-2026-10-09"
+    name = "dlidex-work-2026-11-06"
     req = cdn_models.SetCdnDomainSSLCertificateRequest(
         domain_name=CDN_DOMAIN, cert_name=name, cert_type="upload",
         sslpub=cert_pem, sslpri=key_pem, sslprotocol="on")

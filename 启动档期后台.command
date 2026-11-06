@@ -4,7 +4,7 @@
 cd "$(dirname "$0")" || exit 1
 
 # 确保使用本机已安装的 node/npm
-export PATH="~/.workbuddy/binaries/node/versions/22.22.2/bin:$PATH"
+export PATH="$HOME/.workbuddy/binaries/node/versions/22.22.2/bin:$PATH"
 
 if lsof -ti :5173 >/dev/null 2>&1; then
   echo "后台已在运行，直接打开浏览器"

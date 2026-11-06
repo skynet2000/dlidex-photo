@@ -18,8 +18,8 @@ import json
 import os
 from PIL import Image, ImageOps
 
-SRC_ROOT = "~/Desktop/领证跟拍"
-OUT_DIR = "~/WorkBuddy/个人网页开发/photo-dlidex-site/public/photos"
+SRC_ROOT = os.path.expanduser("~/Desktop/领证跟拍")
+OUT_DIR = os.path.expanduser("~/WorkBuddy/个人网页开发/photo-dlidex-site/public/photos")
 MAX_EDGE = 1600
 QUALITY = 85
 

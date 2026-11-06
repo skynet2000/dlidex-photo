@@ -1,5 +1,6 @@
 import path from "path"
 import fs from "node:fs"
+import os from "node:os"
 import { fileURLToPath } from "node:url"
 import { execFileSync } from "node:child_process"
 import react from "@vitejs/plugin-react"
@@ -9,10 +10,11 @@ import { defineConfig } from "vite"
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // —— 线上发布配置（仅 dev 后台「保存档期」时触发）——
-const CREDS = "~/Documents/阿里云密钥.txt"
-const PY = "~/.workbuddy/binaries/python/envs/default/bin/python3"
-const DEPLOY_SCRIPT = "~/WorkBuddy/个人网页开发/dlidex-site/scripts/deploy-oss.py"
-const REFRESH_SCRIPT = "~/WorkBuddy/个人网页开发/dlidex-site/scripts/refresh-cdn.py"
+const HOME = os.homedir()
+const CREDS = path.join(HOME, "Documents/阿里云密钥.txt")
+const PY = path.join(HOME, ".workbuddy/binaries/python/envs/default/bin/python3")
+const DEPLOY_SCRIPT = path.join(HOME, "WorkBuddy/个人网页开发/dlidex-site/scripts/deploy-oss.py")
+const REFRESH_SCRIPT = path.join(HOME, "WorkBuddy/个人网页开发/dlidex-site/scripts/refresh-cdn.py")
 
 // 保存后自动发布到线上 www.dlidex.work：build → 上传 OSS → 刷 CDN
 function runDeploy(): { ok: boolean; step: string; detail: string } {

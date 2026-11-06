@@ -17,14 +17,14 @@ import sys
 import json
 
 # 引入技能脚本
-SKILL_SCRIPT_DIR = "~/.workbuddy/skills/smart-image-compressor__skillhub/scripts"
+SKILL_SCRIPT_DIR = os.path.expanduser("~/.workbuddy/skills/smart-image-compressor__skillhub/scripts")
 sys.path.insert(0, SKILL_SCRIPT_DIR)
 from compress_image import compress_image  # noqa: E402
 
 from PIL import Image, ImageOps  # noqa: E402
 
-SRC_ROOT = "~/Desktop/领证跟拍"
-OUT_DIR = "~/WorkBuddy/个人网页开发/photo-dlidex-site/public/photos"
+SRC_ROOT = os.path.expanduser("~/Desktop/领证跟拍")
+OUT_DIR = os.path.expanduser("~/WorkBuddy/个人网页开发/photo-dlidex-site/public/photos")
 MAX_EDGE = 1600      # 长边上限（像素），等比缩放
 QUALITY = 72         # JPEG 质量（技能默认 50，这里兼顾画质）
 TARGET_RATIO = 0.3   # 目标压缩后/前体积比

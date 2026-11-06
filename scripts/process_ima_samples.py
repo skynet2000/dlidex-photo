@@ -7,12 +7,12 @@
 import sys, os, json, shutil
 from pathlib import Path
 
-SKILL = "~/.workbuddy/skills/smart-image-compressor__skillhub/scripts"
+SKILL = os.path.expanduser("~/.workbuddy/skills/smart-image-compressor__skillhub/scripts")
 sys.path.insert(0, SKILL)
 from compress_image import compress_image  # 智能图片压缩技能核心函数
 from PIL import Image
 
-BASE = "~/WorkBuddy/个人网页开发/photo-dlidex-site"
+BASE = os.path.expanduser("~/WorkBuddy/个人网页开发/photo-dlidex-site")
 DEST = os.path.join(BASE, "public/photos")
 MAX_DIM = 1600
 QUALITY = 72
@@ -20,14 +20,14 @@ TARGET_RATIO = 0.3
 
 # (源路径, 目标文件名, 是否压缩, title)
 ITEMS = [
-    ("~/Desktop/领证跟拍/客片1/IMG_5921.jpg", "c1-1.jpg", True,  "领证跟拍 · 客片1-1"),
-    ("~/Desktop/领证跟拍/客片1/IMG_6020.jpg", "c1-2.jpg", True,  "领证跟拍 · 客片1-2"),
-    ("~/Desktop/领证跟拍/客片1/IMG_5697.jpg", "c1-3.jpg", True,  "领证跟拍 · 客片1-3"),
-    ("~/Desktop/领证跟拍/客片1/IMG_5584.jpg", "c1-4.jpg", True,  "领证跟拍 · 客片1-4"),
-    ("~/Desktop/领证跟拍/客片2/IMG_5255.jpg", "c2-1.jpg", True,  "领证跟拍 · 客片2-1"),
-    ("~/Desktop/领证跟拍/客片2/1aa7d110-57b7-4e07-9668-ce2416f3afe8.png", "c2-2.jpg", True, "领证跟拍 · 客片2-2"),
-    ("~/Desktop/领证跟拍/客片3/IMG_4119.jpg", "c3-1.jpg", True,  "领证跟拍 · 客片3-1"),
-    ("~/Downloads/0a78c0c6-4392-4361-a930-43073f04c75e.png", "c4-1.png", False, "领证跟拍 · 其他-1"),
+    (os.path.expanduser("~/Desktop/领证跟拍/客片1/IMG_5921.jpg"), "c1-1.jpg", True,  "领证跟拍 · 客片1-1"),
+    (os.path.expanduser("~/Desktop/领证跟拍/客片1/IMG_6020.jpg"), "c1-2.jpg", True,  "领证跟拍 · 客片1-2"),
+    (os.path.expanduser("~/Desktop/领证跟拍/客片1/IMG_5697.jpg"), "c1-3.jpg", True,  "领证跟拍 · 客片1-3"),
+    (os.path.expanduser("~/Desktop/领证跟拍/客片1/IMG_5584.jpg"), "c1-4.jpg", True,  "领证跟拍 · 客片1-4"),
+    (os.path.expanduser("~/Desktop/领证跟拍/客片2/IMG_5255.jpg"), "c2-1.jpg", True,  "领证跟拍 · 客片2-1"),
+    (os.path.expanduser("~/Desktop/领证跟拍/客片2/1aa7d110-57b7-4e07-9668-ce2416f3afe8.png"), "c2-2.jpg", True, "领证跟拍 · 客片2-2"),
+    (os.path.expanduser("~/Desktop/领证跟拍/客片3/IMG_4119.jpg"), "c3-1.jpg", True,  "领证跟拍 · 客片3-1"),
+    (os.path.expanduser("~/Downloads/0a78c0c6-4392-4361-a930-43073f04c75e.png"), "c4-1.png", False, "领证跟拍 · 其他-1"),
 ]
 
 os.makedirs(DEST, exist_ok=True)
