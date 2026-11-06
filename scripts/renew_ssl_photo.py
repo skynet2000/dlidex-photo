@@ -73,6 +73,15 @@ def find_instance(client):
     return [it.instance_id for it in items if not (it.domain or "")]
 
 
+def _dv_pick(d, *names):
+    """DNS 验证记录字段名在不同 SDK 版本/接口下不一致，按候选名依次取第一个非空值"""
+    for n in names:
+        v = getattr(d, n, None)
+        if v:
+            return v
+    return None
+
+
 def do_apply():
     ak, sk = creds()
     client = cas_client(ak, sk)
@@ -100,9 +109,9 @@ def do_apply():
     dv = detail.body.domain_validation_list or []
     print("\n=== DNS 验证记录（若下面为空请用 status 命令再查）===")
     for d in dv:
-        print(json.dumps({"host": getattr(d, "record_host", None) or getattr(d, "domain", None),
-                          "type": getattr(d, "record_type", None),
-                          "value": getattr(d, "record_value", None)}, ensure_ascii=False))
+        print(json.dumps({"host": _dv_pick(d, "record_host", "validation_key", "domain"),
+                          "type": _dv_pick(d, "record_type", "validation_type"),
+                          "value": _dv_pick(d, "record_value", "validation_value")}, ensure_ascii=False))
 
 
 def do_status():
@@ -118,8 +127,10 @@ def do_status():
             print("  certificate_order_id:", getattr(detail.body, "certificate_order_id", None))
             dv = detail.body.domain_validation_list or []
             for d in dv:
-                print("  DNS验证:", {"host": getattr(d, "record_host", None), "type": getattr(d, "record_type", None),
-                                     "value": getattr(d, "record_value", None), "state": getattr(d, "state", None)})
+                print("  DNS验证:", {"host": _dv_pick(d, "record_host", "validation_key", "domain"),
+                                     "type": _dv_pick(d, "record_type", "validation_type"),
+                                     "value": _dv_pick(d, "record_value", "validation_value"),
+                                     "state": _dv_pick(d, "state", "validation_status")})
 
     # 已签发的证书列表里找新证
     lr = client.list_user_certificate_order(cas_models.ListUserCertificateOrderRequest(
