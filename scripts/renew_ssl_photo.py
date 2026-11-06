@@ -4,13 +4,13 @@
 用法:
   python3 renew_ssl_photo.py apply    # 第1步: 占用免费实例 -> 填域名 -> 提交签发申请, 打印 DNS TXT 记录
   python3 renew_ssl_photo.py status   # 第2步: 查看签发进度 / DNS 验证记录
-  python3 renew_ssl_photo.py deploy <cert_id>  # 第3步: 拿证书+私钥, 以 upload 方式部署到 CDN www.dlidex.work
+  python3 renew_ssl_photo.py deploy <cert_id>  # 第3步: 拿证书+私钥, 以 upload 方式部署到 CDN（www + 裸域两个域名）
 """
 import sys, os, json, time
 
 AK_FILE = os.path.expanduser("~/Documents/阿里云密钥.txt")
 DOMAIN = "www.dlidex.work"
-CDN_DOMAIN = "www.dlidex.work"
+CDN_DOMAINS = ["www.dlidex.work", "dlidex.work"]  # 裸域也是独立 CDN 域名，必须一起换证
 CONTACT_ID = 1409362          # 主站换证时确认的联系人 ID
 PRODUCT_CODE = "digicert-free-1-free"
 
@@ -150,12 +150,21 @@ def do_deploy(cert_id):
     from alibabacloud_tea_openapi import models as open_api_models
     cdn = CdnClient(open_api_models.Config(access_key_id=ak, access_key_secret=sk, endpoint="cdn.aliyuncs.com"))
     from alibabacloud_cdn20180510 import models as cdn_models
-    name = "dlidex-work-2026-11-06"
-    req = cdn_models.SetCdnDomainSSLCertificateRequest(
-        domain_name=CDN_DOMAIN, cert_name=name, cert_type="upload",
-        sslpub=cert_pem, sslpri=key_pem, sslprotocol="on")
-    r = cdn.set_cdn_domain_sslcertificate(req)
-    print("CDN 部署返回:", r.body)
+    # 证书名在同一账号内必须唯一，否则报 CertNameAlreadyExists(400)
+    # 两个域名各用自己的名字，且带日期便于识别
+    stamp = time.strftime("%Y-%m-%d")
+    for domain in CDN_DOMAINS:
+        # www.dlidex.work -> dlidex-work-<日期>；dlidex.work -> dlidex-apex-<日期>
+        slug = "dlidex-apex" if domain.count(".") == 1 else "dlidex-work"
+        name = f"{slug}-{stamp}"
+        req = cdn_models.SetCdnDomainSSLCertificateRequest(
+            domain_name=domain, cert_name=name, cert_type="upload",
+            sslpub=cert_pem, sslpri=key_pem, sslprotocol="on")
+        try:
+            r = cdn.set_cdn_domain_sslcertificate(req)
+            print(f"CDN 部署 {domain}（证书名 {name}）返回:", r.body)
+        except Exception as e:
+            print(f"!! {domain} 部署失败:", str(e)[:300])
 
 
 if __name__ == "__main__":
